@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Exceptions\DomainException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateUserRequest extends FormRequest
 {
@@ -24,8 +24,6 @@ class CreateUserRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-        ], 422));
+        throw new DomainException($validator->messages()->all(), 422);
     }
 }
