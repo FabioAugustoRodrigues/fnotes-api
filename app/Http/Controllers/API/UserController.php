@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
-use Illuminate\Http\Request;
+use App\Http\Requests\User\CreateUserRequest;
 use App\Services\User\CreateUserAccountService;
+use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -15,10 +16,10 @@ class UserController extends BaseController
         $this->createUserAccountService = $createUserAccountService;
     }
 
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
         try {
-            $userAccount = $this->createUserAccountService->execute($request->all());
+            $userAccount = $this->createUserAccountService->execute($request->validated());
 
             return $this->sendResponse(['user_account' => $userAccount], "", 201);
         } catch (\Exception $e) {
