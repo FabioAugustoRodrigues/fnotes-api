@@ -6,19 +6,22 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Services\User\CreateUserAccountService;
 use App\Services\User\GetUserByIdService;
-use Illuminate\Http\Request;
+use App\Services\User\GetUsersService;
 
 class UserController extends BaseController
 {
     protected $createUserAccountService;
     protected $getUserByIdService;
+    protected $getUsersService;
 
     public function __construct(
         CreateUserAccountService $createUserAccountService,
-        GetUserByIdService $getUserByIdService
+        GetUserByIdService $getUserByIdService,
+        GetUsersService $getUsersService
     ) {
         $this->createUserAccountService = $createUserAccountService;
         $this->getUserByIdService = $getUserByIdService;
+        $this->getUsersService = $getUsersService;
     }
 
     public function store(CreateUserRequest $request)
@@ -31,5 +34,10 @@ class UserController extends BaseController
     public function show($id)
     {
         return $this->sendResponse($this->getUserByIdService->execute($id), "", 200);
+    }
+
+    public function index()
+    {
+        return $this->sendResponse($this->getUsersService->execute(), "", 200);
     }
 }
