@@ -4,12 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
 use App\Services\User\CreateUserAccountService;
 use App\Services\User\GetUserByIdService;
 use App\Services\User\GetUsersService;
 use App\Services\User\LoginUserService;
+use App\Services\User\UpdateUserService;
 use Illuminate\Http\Request;
 
 class UserController extends BaseController
@@ -18,17 +20,20 @@ class UserController extends BaseController
     protected $getUserByIdService;
     protected $getUsersService;
     protected $loginUserService;
+    protected $updateUserService;
 
     public function __construct(
         CreateUserAccountService $createUserAccountService,
         GetUserByIdService $getUserByIdService,
         GetUsersService $getUsersService,
-        LoginUserService $loginUserService
+        LoginUserService $loginUserService,
+        UpdateUserService $updateUserService
     ) {
         $this->createUserAccountService = $createUserAccountService;
         $this->getUserByIdService = $getUserByIdService;
         $this->getUsersService = $getUsersService;
         $this->loginUserService = $loginUserService;
+        $this->updateUserService = $updateUserService;
     }
 
     public function store(CreateUserRequest $request)
@@ -59,5 +64,10 @@ class UserController extends BaseController
     public function me(Request $request)
     {
         return $this->sendResponse($request->user(), "", 200);
+    }
+
+    public function update(UpdateUserRequest $request)
+    {
+        return $this->sendResponse(new UserResource($this->updateUserService->execute($request->user()->id, $request->validated())), "", 200);
     }
 }

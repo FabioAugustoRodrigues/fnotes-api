@@ -36,8 +36,9 @@ class UserRepository
     public function update($id, array $data)
     {
         $record = $this->getById($id);
+        $record->update($data);
 
-        return $record->update($data);
+        return $record->refresh();
     }
 
     public function delete($id)
