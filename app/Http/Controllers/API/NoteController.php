@@ -10,6 +10,7 @@ use App\Services\Note\CreateNoteService;
 use App\Services\Note\GetNoteBySlugService;
 use App\Services\Note\getNotesByUserService;
 use App\Services\Note\GetNotesService;
+use Illuminate\Http\Request;
 
 class NoteController extends BaseController
 {
@@ -52,5 +53,9 @@ class NoteController extends BaseController
 
     public function showByUser($user_id) {
         return $this->sendResponse(new NoteCollection($this->getNotesByUserService->execute($user_id)), "", 200);
+    }
+
+    public function showByCurrentUser(Request $request) {
+        return $this->sendResponse(new NoteCollection($this->getNotesByUserService->execute($request->user()->id)), "", 200);
     }
 }
