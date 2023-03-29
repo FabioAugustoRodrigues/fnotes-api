@@ -27,3 +27,4 @@ Route::put('/users/me', [UserController::class, 'update'])->middleware('auth:san
 Route::post('/users/me/notes', [NoteController::class, 'store'])->middleware('auth:sanctum');
 
 Route::get('/notes/{slug}', [NoteController::class, 'showBySlug']);
+Route::get('/notes', [NoteController::class, 'index']);

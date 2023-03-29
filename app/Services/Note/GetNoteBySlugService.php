@@ -4,8 +4,6 @@ namespace App\Services\Note;
 
 use App\Exceptions\DomainException;
 use App\Repositories\NoteRepository;
-use App\Services\User\GetUserByIdService;
-use App\Utils\SlugUtil;
 
 class GetNoteBySlugService
 {
