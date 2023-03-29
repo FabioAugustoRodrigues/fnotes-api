@@ -18,12 +18,8 @@ class UserController extends BaseController
 
     public function store(CreateUserRequest $request)
     {
-        try {
-            $userAccount = $this->createUserAccountService->execute($request->validated());
+        $userAccount = $this->createUserAccountService->execute($request->validated());
 
-            return $this->sendResponse(['user_account' => $userAccount], "", 201);
-        } catch (\Exception $e) {
-            return $this->sendResponse(['error' => $e->getMessage()], "", 500);
-        }
+        return $this->sendResponse(['user_account' => $userAccount], "", 201);
     }
 }
