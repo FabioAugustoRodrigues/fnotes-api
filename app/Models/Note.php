@@ -16,4 +16,14 @@ class Note extends Model
         'title',
         'content'
     ];
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class, 'note_id');
+    }
+
+    public function childNotes()
+    {
+        return $this->hasMany(Note::class, 'note_id')->with('notes');
+    }
 }

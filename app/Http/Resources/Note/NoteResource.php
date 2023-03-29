@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Note;
 
+use App\Models\Note;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class NoteResource extends JsonResource
@@ -19,6 +20,9 @@ class NoteResource extends JsonResource
             "content" => $this->content,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
+            "child_notes" => Note::where('note_id', $this->id)
+                ->with('childNotes')
+                ->get()
         ];
     }
 }
