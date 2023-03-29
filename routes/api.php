@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\API\NoteController;
 use App\Http\Controllers\API\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +25,5 @@ Route::get('/users/me', [UserController::class, 'me'])->middleware('auth:sanctum
 Route::put('/users/me', [UserController::class, 'update'])->middleware('auth:sanctum');
 
 Route::post('/users/me/notes', [NoteController::class, 'store'])->middleware('auth:sanctum');
+
+Route::get('/notes/{slug}', [NoteController::class, 'showBySlug']);
