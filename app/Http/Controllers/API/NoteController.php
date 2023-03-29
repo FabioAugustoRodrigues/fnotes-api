@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\Note\CreateNoteRequest;
+use App\Http\Resources\Note\NoteCollection;
+use App\Http\Resources\Note\NoteResource;
 use App\Services\Note\CreateNoteService;
 use App\Services\Note\GetNoteBySlugService;
 use App\Services\Note\GetNotesService;
@@ -29,18 +31,18 @@ class NoteController extends BaseController
         $parent_note_id = $request->note_id;
         $note = $this->createNoteService->execute($request->user()->id, $parent_note_id, $request->validated());
 
-        return $this->sendResponse(['note' => $note], "", 201);
+        return $this->sendResponse(new NoteResource($note), "", 201);
     }
 
     public function showBySlug($slug)
     {
         $note = $this->getNoteBySlugService->execute($slug);
 
-        return $this->sendResponse(['note' => $note], "", 200);
+        return $this->sendResponse(new NoteResource($note), "", 200);
     }
 
     public function index()
     {
-        return $this->sendResponse($this->getNotesService->execute(), "", 200);
+        return $this->sendResponse(new NoteCollection($this->getNotesService->execute()), "", 200);
     }
 }
