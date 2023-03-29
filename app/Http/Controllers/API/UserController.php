@@ -55,4 +55,9 @@ class UserController extends BaseController
 
         return $this->sendResponse($this->loginUserService->execute($email, $password), "", 200);
     }
+
+    public function me(Request $request)
+    {
+        return $this->sendResponse($request->user(), "", 200);
+    }
 }
