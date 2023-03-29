@@ -18,6 +18,11 @@ class NoteRepository
         return $this->model->all();
     }
 
+    public function getAllByUserId($user_id)
+    {
+        return $this->model->where('user_id', $user_id)->where('note_id', null)->get();
+    }
+
     public function getById($id)
     {
         return $this->model->find($id);

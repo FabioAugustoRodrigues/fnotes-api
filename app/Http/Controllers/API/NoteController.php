@@ -8,6 +8,7 @@ use App\Http\Resources\Note\NoteCollection;
 use App\Http\Resources\Note\NoteResource;
 use App\Services\Note\CreateNoteService;
 use App\Services\Note\GetNoteBySlugService;
+use App\Services\Note\getNotesByUserService;
 use App\Services\Note\GetNotesService;
 
 class NoteController extends BaseController
@@ -15,15 +16,18 @@ class NoteController extends BaseController
     protected $createNoteService;
     protected $getNoteBySlugService;
     protected $getNotesService;
+    protected $getNotesByUserService;
 
     public function __construct(
         CreateNoteService $createNoteService,
         GetNoteBySlugService $getNoteBySlugService,
-        GetNotesService $getNotesService
+        GetNotesService $getNotesService,
+        getNotesByUserService $getNotesByUserService
     ) {
         $this->createNoteService = $createNoteService;
         $this->getNoteBySlugService = $getNoteBySlugService;
         $this->getNotesService = $getNotesService;
+        $this->getNotesByUserService = $getNotesByUserService;
     }
 
     public function store(CreateNoteRequest $request)
@@ -44,5 +48,9 @@ class NoteController extends BaseController
     public function index()
     {
         return $this->sendResponse(new NoteCollection($this->getNotesService->execute()), "", 200);
+    }
+
+    public function showByUser($user_id) {
+        return $this->sendResponse(new NoteCollection($this->getNotesByUserService->execute($user_id)), "", 200);
     }
 }

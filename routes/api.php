@@ -20,11 +20,12 @@ Route::get('/users', [UserController::class, 'index']);
 
 Route::post('/users', [UserController::class, 'store']);
 Route::post('/users/login', [UserController::class, 'login']);
+Route::post('/users/notes', [NoteController::class, 'showByUser']);
 
 Route::get('/users/me', [UserController::class, 'me'])->middleware('auth:sanctum');
 Route::put('/users/me', [UserController::class, 'update'])->middleware('auth:sanctum');
 
-Route::post('/users/me/notes', [NoteController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/users/{id}/notes', [NoteController::class, 'showByUser']);
 
 Route::get('/notes/{slug}', [NoteController::class, 'showBySlug']);
 Route::get('/notes', [NoteController::class, 'index']);
