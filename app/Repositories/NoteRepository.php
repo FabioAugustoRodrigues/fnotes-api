@@ -15,7 +15,7 @@ class NoteRepository
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->model->where('note_id', null)->get();
     }
 
     public function getAllByUserId($user_id)
