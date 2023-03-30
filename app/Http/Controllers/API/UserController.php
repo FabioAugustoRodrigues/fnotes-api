@@ -8,6 +8,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
 use App\Services\User\CreateUserAccountService;
+use App\Services\User\DeleteUserByIdService;
 use App\Services\User\GetUserByIdService;
 use App\Services\User\GetUsersService;
 use App\Services\User\LoginUserService;
@@ -21,19 +22,22 @@ class UserController extends BaseController
     protected $getUsersService;
     protected $loginUserService;
     protected $updateUserService;
+    protected $deleteUserByIdService;
 
     public function __construct(
         CreateUserAccountService $createUserAccountService,
         GetUserByIdService $getUserByIdService,
         GetUsersService $getUsersService,
         LoginUserService $loginUserService,
-        UpdateUserService $updateUserService
+        UpdateUserService $updateUserService,
+        DeleteUserByIdService $deleteUserByIdService
     ) {
         $this->createUserAccountService = $createUserAccountService;
         $this->getUserByIdService = $getUserByIdService;
         $this->getUsersService = $getUsersService;
         $this->loginUserService = $loginUserService;
         $this->updateUserService = $updateUserService;
+        $this->deleteUserByIdService = $deleteUserByIdService;
     }
 
     public function store(CreateUserRequest $request)
@@ -75,6 +79,11 @@ class UserController extends BaseController
     {
         $request->user()->currentAccessToken()->delete();
 
-        return $this->sendResponse(null, "Logout efetuado com sucesso", 200);
+        return $this->sendResponse(null, "Logout successful", 200);
+    }
+
+    public function delete(Request $request)
+    {
+        return $this->sendResponse($this->deleteUserByIdService->execute($request->user()->id), "User deleted successfully", 200);
     }
 }
