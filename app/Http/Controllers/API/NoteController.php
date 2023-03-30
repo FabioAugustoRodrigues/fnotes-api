@@ -8,6 +8,7 @@ use App\Http\Requests\Note\UpdateNoteRequest;
 use App\Http\Resources\Note\NoteCollection;
 use App\Http\Resources\Note\NoteResource;
 use App\Services\Note\CreateNoteService;
+use App\Services\Note\DeleteNoteByIdService;
 use App\Services\Note\GetNoteBySlugService;
 use App\Services\Note\getNotesByUserService;
 use App\Services\Note\GetNotesService;
@@ -21,19 +22,22 @@ class NoteController extends BaseController
     protected $getNotesService;
     protected $getNotesByUserService;
     protected $updateNoteService;
+    protected $deleteNoteByIdService;
 
     public function __construct(
         CreateNoteService $createNoteService,
         GetNoteBySlugService $getNoteBySlugService,
         GetNotesService $getNotesService,
         getNotesByUserService $getNotesByUserService,
-        UpdateNoteService $updateNoteService
+        UpdateNoteService $updateNoteService,
+        DeleteNoteByIdService $deleteNoteByIdService
     ) {
         $this->createNoteService = $createNoteService;
         $this->getNoteBySlugService = $getNoteBySlugService;
         $this->getNotesService = $getNotesService;
         $this->getNotesByUserService = $getNotesByUserService;
         $this->updateNoteService = $updateNoteService;
+        $this->deleteNoteByIdService = $deleteNoteByIdService;
     }
 
     public function store(CreateNoteRequest $request)
@@ -66,5 +70,9 @@ class NoteController extends BaseController
 
     public function update(UpdateNoteRequest $request, $id) {
         return $this->sendResponse(new NoteResource($this->updateNoteService->execute($id, $request->user()->id, $request->validated())), "", 200);
+    }
+
+    public function delete(Request $request, $id) {
+        return $this->sendResponse($this->deleteNoteByIdService->execute($id, $request->user()->id), "Note deleted successfully", 200);
     }
 }

@@ -29,6 +29,7 @@ Route::get('/users', [UserController::class, 'index']);
 Route::post('/users/me/notes', [NoteController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/users/me/notes', [NoteController::class, 'showByCurrentUser'])->middleware('auth:sanctum');
 Route::put('/users/me/notes/{id}', [NoteController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/users/me/notes/{id}', [NoteController::class, 'delete'])->middleware('auth:sanctum');
 
 Route::get('/users/{id}/notes', [NoteController::class, 'showByUser']);
 
