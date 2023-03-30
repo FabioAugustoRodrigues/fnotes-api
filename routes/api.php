@@ -15,14 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::get('/users', [UserController::class, 'index']);
-
 Route::post('/users', [UserController::class, 'store']);
 Route::post('/users/login', [UserController::class, 'login']);
 
 Route::get('/users/me', [UserController::class, 'me'])->middleware('auth:sanctum');
 Route::put('/users/me', [UserController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/users/me', [UserController::class, 'delete'])->middleware('auth:sanctum');
+Route::post('/users/me/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::get('/users', [UserController::class, 'index']);
 
 Route::post('/users/me/notes', [NoteController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/users/me/notes', [NoteController::class, 'showByCurrentUser'])->middleware('auth:sanctum');

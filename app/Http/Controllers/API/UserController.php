@@ -70,4 +70,11 @@ class UserController extends BaseController
     {
         return $this->sendResponse(new UserResource($this->updateUserService->execute($request->user()->id, $request->validated())), "", 200);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return $this->sendResponse(null, "Logout efetuado com sucesso", 200);
+    }
 }
